@@ -1,3 +1,3 @@
 # env2conf
 
-now is v1.1 beta
+now is v1.0
