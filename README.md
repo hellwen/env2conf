@@ -1,3 +1,3 @@
 # env2conf
 
-now is v1.0
+now is v1.1
