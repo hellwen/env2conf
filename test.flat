@@ -1,4 +1,4 @@
-server_Port = :1024
+server_Port = :1026
 sourcename  = account_server_app:account_server_app@tcp(192.168.60.72:3310)/account_server?charset=utf8
 DeviceDB    = device_server_dev:device_server_dev@tcp(192.168.60.72:3310)/device_server?charset=utf8
 

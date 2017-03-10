@@ -11,4 +11,4 @@ push:
 test:
 	env2conf -type ini -file test.flat
 	env2conf -type ini -file test.ini
-	env2conf -type yaml -file test.yaml
+	@# env2conf -type yaml -file test.yaml

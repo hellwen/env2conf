@@ -15,9 +15,10 @@ var appName = "env2conf"
 
 var configFile = flag.String("file", "", "point to the config file")
 var fileType = flag.String("type", "ini", "config file type: ini, yaml")
+var variablePrefix = flag.String("prefix", "", "set the env variable prefix")
 var queryVersion = flag.Bool("version", false, "query version")
 
-func toIni(configFile string) {
+func toIni(configFile string, prefix string) {
         cfg, err := ini.Load(configFile)
         if err != nil {
                 log.Fatalf("%v Cant not load the config file: %v, error: %v", appName, configFile, err)
@@ -26,17 +27,22 @@ func toIni(configFile string) {
 	log.Printf("%v Init config file...", appName)
         for _, s := range cfg.Sections() {
                 for _, k := range s.Keys() {
-			var envName string
+			var varName string
                         if strings.ToUpper(s.Name()) != "DEFAULT" {
-                        	envName = strings.ToUpper(s.Name()) + "_" + strings.ToUpper(k.Name())
+                        	varName = s.Name() + "_" + k.Name()
 			} else {
-                        	envName = strings.ToUpper(k.Name())
+                        	varName = k.Name()
 			}
-			log.Printf("%v - %v = %v", appName, envName, k.String())
+                        envName := strings.ToUpper(varName)
+			log.Printf("%v - %v = %v", appName, varName, k.String())
 
-			envValue := os.Getenv(envName)
+			fullEnvName := envName
+			if prefix != "" {
+				fullEnvName = prefix + "_" + envName
+			}
+			envValue := os.Getenv(fullEnvName)
 			if envValue != "" && envValue != k.String() {
-				log.Printf("%v  => %v", appName, envValue)
+				log.Printf("%v --> %v = %v", appName, fullEnvName, envValue)
 				k.SetValue(envValue)
 			}
                 }
@@ -74,8 +80,15 @@ func main() {
 	flag.Parse()
 
 	if *queryVersion {
-		fmt.Printf("%v version 1.0\n", appName)
+		fmt.Printf("%v version 1.1\n", appName)
 		return
+	}
+
+	fmt.Printf("%v version 1.1\n", appName)
+
+	prefix := ""
+	if *variablePrefix != "" {
+		prefix = *variablePrefix
 	}
 
 	log.Printf("%v version 1.0", appName)
@@ -83,7 +96,7 @@ func main() {
 	switch *fileType {
 	case "ini":
 		log.Printf("%v Ini file:%v", appName, *configFile)
-		toIni(*configFile)
+		toIni(*configFile, prefix)
 	case "yaml":
 		log.Printf("%v Yaml file:%v", appName, *configFile)
 		toYaml(*configFile)
