@@ -7,6 +7,9 @@ push:
 	git add .
 	git commit -am "ok"
 	git push -u origin master
+ifdef TAG
+	git push -u origin $(TAG)
+endif
 
 test:
 	env2conf -type ini -file test.flat
