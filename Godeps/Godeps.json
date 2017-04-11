@@ -1,0 +1,16 @@
+{
+	"ImportPath": "env2conf",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "gopkg.in/ini.v1",
+			"Comment": "v1.26.0",
+			"Rev": "1730955e3146956d6a087861380f9b4667ed5071"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "a5b47d31c556af34a302ce5d659e6fea44d90de0"
+		}
+	]
+}
